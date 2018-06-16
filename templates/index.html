@@ -1,39 +1,124 @@
-<! doctype html>
+
+<!-- https://www.youtube.com/watch?v=mFgltjfVV6A&index=14&list=PL0eyrZgxdwhwNC5ppZo_dYGVjerQY3xYU<! doctype html> -->
 <html>
 <head>
     <!-- import Chinese -->
-    <meta charset="utf-8"> 
+    <meta charset="utf-8" name="utopian rainbow"> 
     <title>UTOPIAN</title>
     <link rel="stylesheet" type = "text/css" href="{{url_for('static',filename='style_sheet.css')}}"/>
 
-    <!-- <style type="text/css">
-        #header{
-        position: absolute;
+    <style type="text/css">
+    /* everything no margin and padding */
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    header{
+        width: 100%;
+        height: 150px;
+        /* position: absolute;
         left:0%;
-        right: 0%;
+        right: 0%; */
+        
         background-color: pink;
         color: rgb(240, 119, 6);
         font-family: Georgia;
         font-weight: bold;
-         }
-    </style> -->
+        }
+
+    nav {
+        width: 1000px;
+        height: 40px;
+        background-color:rgb(197, 163, 163);
+
+    }
+    
+    #wrapper{
+        width: 1000px;
+        /* top left bot right  */
+        margin: 0 auto 0 auto; 
+    }
+
+    #brand{
+        padding-left: 50px;
+        /* position:absolute; */
+        /* left:5%; */
+    }
+
+    #lang_sign{
+        position: absolute;
+        right: 5%;
+        top: 0%;
+        /* padding: 20px; */
+    }
+
+
+    /* to move entire nav bar */
+    ul{
+        color: bisque;
+    }
+
+    /* move link */
+    ul>li{
+        /* nav bar 1000px each 200px */
+        width: 200px;
+        list-style: none; /* no dot in the front */
+        display: inline-block;
+        line-height: 40px; 
+        float: left;/* so that item float on left of container: the ul */
+        /* same as nav height to center text */
+    }
+
+    /* move text of link */
+    ul li a{
+        display: block; /* to make text to clickble block*/
+        font-size: 16;
+        font-family: arial;
+        /* 0 for top bot, 30 for left right */
+        padding: 0 30px;
+        color:rgb(240, 119, 6);
+        text-decoration: none;
+        text-align: center;
+    }
+
+    a{
+        color:rgb(240, 119, 6);
+        text-decoration: none;
+    }
+
+
+    </style>
 </head>
 
 <body>
-    <div id="header">
+    <header>
         <div id ="brand">
-        <h1>UTOPIAN RAINBOW</h1>  
-        <h3>Together, we difine a better tomorrow</h3>  
-        </div>
-        
-        <div id="lang_sign">
-            <h3><a href="chineseIndex.html">中文</a></h3>
-            <h4 id="log_sign"><a href="login.html">login</a> <a href="signup.html">sign up</a> </h4>
+            <h1>UTOPIAN RAINBOW</h1>  
+            <h3>Together, we difine a better tomorrow</h3>  
         </div>
 
-        </p>
-        <hr/>
-        <p><span id = "navbar">HOME | ABOUT US      | NGOs     |       FELLOSHIPS     |   COMMUNITY   </span></p>
+        <div id="lang_sign">
+            <h3><a href="chineseIndex.html"> 中文</a> <a href="Index.html"> English</a></h3>
+            <h4 id="log_sign"><a href="login.html">login </a> <a href="signup.html"> sign up</a> </h4>
+        </div>
+
+        <hr>
+
+        <!-- <img src="" alt="Utopian Rainbow"> -->
+        <!-- browser know its menu with nav tag -->
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="aboutus.html">ABOUT US</a></li>
+                <li><a href="ngo.html">NGOs</a></li>
+                <li><a href="fellowship.html">FELLOWSHIPS</a></li>
+                <li><a href="community.html">COMMUNITY</a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <div class = "wrapper">
 
     </div>
 
