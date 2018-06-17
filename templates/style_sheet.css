@@ -1,0 +1,16 @@
+
+header{
+position: absolute;
+left:5%;
+right: 0%;
+background-color: pink;
+color: rgb(240, 119, 6);
+font-family: Georgia;
+font-weight: bold;
+ }
+
+/* #lang_sign{
+    position: absolute;
+    right: 0%;
+    top: 0%;
+} */

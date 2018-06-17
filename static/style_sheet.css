@@ -1,16 +1,82 @@
 
-#header{
-position: absolute;
-left:5%;
-right: 0%;
-background-color: pink;
-color: rgb(240, 119, 6);
-font-family: Georgia;
-font-weight: bold;
- }
+    /* everything no margin and padding */
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    header{
+        width: 100%;
+        height: 150px;        
+        background-color: pink;
+        color: rgb(240, 119, 6);
+        font-family: Georgia;
+        font-weight: bold;
+        }
 
-/* #lang_sign{
-    position: absolute;
-    right: 0%;
-    top: 0%;
-} */
+    nav { width: 1000px;height: 40px;
+          background-color: pink;
+          /* position: relative; top:50px; */
+        }
+        /* to move entire nav bar */
+    ul{
+        /* position: absolute;
+        left 50%; */
+    }
+    /* move link */
+    ul>li{
+        /* nav bar 1000px each 200px */
+        width: 200px;
+        list-style: none; /* no dot in the front */
+        display: inline-block;
+        line-height: 40px; 
+        float: left;/* so that item float on left of container: the ul */
+        /* same as nav height to center text */
+    }
+
+    /* move text of link */
+    ul li a{
+        display: block; /* to make text to clickble block*/
+        font-size: 16;
+        font-family: arial;
+        /* 0 for top bot, 30 for left right */
+        padding: 0 30px;
+        color:rgb(240, 119, 6);
+        text-decoration: none;
+        text-align: center;
+    }
+    
+    #wrapper{
+        width: 1000px;
+        /* top left bot right  */
+        margin: 0 auto 0 auto; 
+    }
+
+    #brand{
+        padding-left: 50px;
+        padding-bottom: 50px;
+        /* position:absolute; */
+        /* left:5%; */
+    }
+
+    #lang_sign{
+        position: absolute;
+        right: 5%;
+        top: 0%;
+        /* padding: 20px; */
+    }
+
+
+    a{
+        color:rgb(240, 119, 6);
+        text-decoration: none;
+    } 
+
+    @media screen and (max-width:1000px){
+        nav { width: 600px;height: 40px;}
+        /* move link */
+        ul>li{width: 120px;}
+        /* move text of link */
+        ul li a{font-size: 11;}
+        #brand{font-size: 14px;}
+        #lang_sign{font-size: 12px;}
+    }
