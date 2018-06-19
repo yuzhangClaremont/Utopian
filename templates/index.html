@@ -1,46 +1,60 @@
 
 <!-- https://www.youtube.com/watch?v=mFgltjfVV6A&index=14&list=PL0eyrZgxdwhwNC5ppZo_dYGVjerQY3xYU<! doctype html> -->
-<html>
-<head>
-    <!-- import Chinese -->
-    <meta charset="utf-8" name="utopian rainbow"> 
-    <title>UTOPIAN</title>
-    <link rel="stylesheet" type = "text/css" href="{{url_for('static',filename='style_sheet.css')}}"/>
-    
-</head>
+
+{% extends 'layout.html' %}
+
+{%block body%}
 
 <body>
-    <header>
-        <div id ="brand">
-            <h1>UTOPIAN RAINBOW</h1>  
-            <h3>Together, we difine a better tomorrow</h3>  
+        <div class="jumbotron " style="margin-bottom: 0px;">
+            <h1>Utopian</h1>
+            <p>Together we define a better tomorrow</p>
         </div>
-
-        <div id="lang_sign">
-            <h3><a href="chineseIndex.html"> 中文</a> <a href="Index.html"> English</a></h3>
-            <h4 id="log_sign"><a href="login.html">login </a> <a href="signup.html"> sign up</a> </h4>
-        </div>
-
-        <hr>
-
-        <!-- <img src="" alt="Utopian Rainbow"> -->
-        <!-- browser know its menu with nav tag -->
-        <nav>
-            <ul>
-                <li><a href="index.html">HOME</a></li>
-                <li><a href="aboutus.html">ABOUT US</a></li>
-                <li><a href="ngo.html">NGOs</a></li>
-                <li><a href="fellowship.html">FELLOWSHIPS</a></li>
-                <li><a href="community.html">COMMUNITY</a></li>
-            </ul>
-        </nav>
-
-    </header>
-
-    <div class = "wrapper">
-
-    </div>
-
+            {% include '_navbar.html' %}
+    
+            <div class="container">
+                <h1>Welcome to Utopian Rainbow</h1>
+                <p>Together we define a better tomorrow!</p>
+                <!-- row class make every div in a row -->
+                <div class="row">
+                    <!-- 3*4 = 12 in total -->
+                    <div class="col-md-4" style="background-color: #FF9999">LEFT </div>
+                    <div class="col-md-4" style="background-color: rgb(153, 209, 255)">MIDDLE </div>
+                    <div class="col-md-4" style="background-color: rgb(247, 153, 255)">RIGHT </div>
+                    
+                </div>
+    
+                <p>You can <mark>highlight </mark> text here.</p>
+                <blockquote class="blockquote">
+                    <p>You can also use quote here</p>
+                    <footer class="blockquote-footer">Author </footer>
+                </blockquote>
+    
+                <h4>Thins to do when bored</h4>
+                <dl>
+                    <dt>indoors</dt>
+                        <dd>-take a nap</dd>
+                        <dd>-Netflix</dd>
+                    <dt>outdoors</dt>
+                        <dd>-surfing</dd>
+                </dl>
+    
+                <p>you can also put <code>source code </code> here for single line code</p>
+                <p>for multiline code you can use pre tag</p>
+                <pre>
+                    for i in list:
+                        print i
+                </pre>
+    
+                <p>you can also use keyborad tag for keyborad command like <kbd>Ctrl+Cmd+Del</kbd></p>
+    
+                <h4>Build-in color classes</h4>
+                <p class="text-muted">Text muted</p>
+                <p class="text-success">Congrats you filled correctly</p>
+                <p class="bg-danger">dangerous text</p>
+            </div>
 </body>
+{%endblock%}
 
-</html>
+
+

@@ -13,7 +13,7 @@
         font-weight: bold;
         }
 
-    nav { width: 1000px;height: 40px;
+    nav { width: 100%; height: 40px;
           background-color: pink;
           /* position: relative; top:50px; */
         }
@@ -25,7 +25,7 @@
     /* move link */
     ul>li{
         /* nav bar 1000px each 200px */
-        width: 200px;
+        width: 20%;
         list-style: none; /* no dot in the front */
         display: inline-block;
         line-height: 40px; 
@@ -59,12 +59,19 @@
     }
 
     #lang_sign{
+        /* display: flex */
         position: absolute;
         right: 5%;
         top: 0%;
         /* padding: 20px; */
     }
 
+    #lang{
+        display:inline-block;
+    }
+    #sign{
+        display: inline-block;
+    }
 
     a{
         color:rgb(240, 119, 6);
@@ -72,11 +79,11 @@
     } 
 
     @media screen and (max-width:1000px){
-        nav { width: 600px;height: 40px;}
+        nav { height: 40px;} 
         /* move link */
-        ul>li{width: 120px;}
+        /* ul>li{width: 120px;} */
         /* move text of link */
         ul li a{font-size: 11;}
-        #brand{font-size: 14px;}
+        #brand{font-size: 12px;}
         #lang_sign{font-size: 12px;}
     }
