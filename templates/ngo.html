@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+
+{%block body%}
+
+<body>
+        {% if username != None %} 
+            {% include '_userNavbar.html' %} 
+            <h1>username != None {{username}}!</h1>
+        {% else %}
+            {% include '_navbar.html' %}
+            <h1>username = None</h1>
+        {% endif %}
+            
+            <h2>NGO</h2>
+</body>
+{% endblock %}

@@ -1,5 +1,7 @@
 Utopian Rainbow
 
+cmd + shift + r (hard refresh)
+
 # User registration
 https://www.youtube.com/watch?v=8aTnmsDMldY
 
@@ -27,8 +29,19 @@ create table employees(id integer primary key, name text);
 .exit
 ctrl+d exit
 
->>> from yourapplication import db
+python in virtualenv
+>>> from utopianRaibow import db
 >>> db.create_all() 
+
 sqlite3 database.db
-.table
+.tables
 sqlite> select * from user;
+
+# upload file to database 
+pretty print
+
+>>> from utopianRainbow import db
+>>> from utopianRainbow import User
+>>> newuser = User(1,'username1', 'email@email.com',' password', 'heashot')
+>>> db.session.add(newuser)
+ db.session.commit()

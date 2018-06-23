@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, flash, redirect
+from flask import Flask, render_template, url_for, redirect, request
 from flask_wtf import FlaskForm
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -21,10 +21,19 @@ login_manager.login_view = 'login'
 # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 class User(UserMixin, db.Model):
+    __tablename___ = "user"
     id = db.Column(db.Integer, primary_key=True)
     username=db.Column(db.String(15),unique=True)
     email=db.Column(db.String(50),unique=True)
     password = db.Column(db.String(80))
+    headshot = db.Column(db.LargeBinary)
+
+    # def __init__(self, id, username, email, password, headshot):
+    #     self.id = id
+    #     self.username=username
+    #     self.email = email
+    #     self.password = password
+    #     self.headshot = headshot
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -42,16 +51,25 @@ class RegisterForm(FlaskForm):
   
 
 @app.route("/")
-def home():
+@app.route("/index")
+@app.route("/<username>")
+def index(username=None):
     return render_template("index.html")
 
 @app.route("/aboutus/")
-def aboutus():
+def aboutus(username=None):
     return render_template("aboutus.html")
 
 @app.route("/ngo/")
-def ngo():
-    return render_template("ngo.html")
+@app.route("/ngo/<username>")
+def ngo(username=None):
+    form = LoginForm()
+    if username == None:
+        return render_template("ngo.html")
+        
+    else:
+        return render_template('ngo.html', username=form.username.data)
+        
 
 @app.route("/fellowship")
 def fellowship():
@@ -61,10 +79,11 @@ def fellowship():
 def community():
     return render_template("community.html")
 
-@app.route("/dashboard")
+@app.route("/dashboard/<username>")
+# @app.route("/dashboard/")
 @login_required
-def dashboard():
-    return render_template("dashboard.html")
+def dashboard(username=None):
+    return render_template("dashboard.html", name=current_user.username, headshot=current_user.headshot)
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -74,10 +93,11 @@ def login():
         # first result in database, username suppost to be unique
         if user:
             if check_password_hash(user.password,form.password.data):
+                login_user(user, remember=form.remember.data)
             # if user.password== form.password.data:
-                return redirect(url_for('dashboard'))
-        return 'invalid username or password'
-    return render_template("login.html", form=form)
+                return redirect(url_for('dashboard',username = form.username.data))
+        return render_template("login.html", form=form, login_fail = 1)
+    return render_template("login.html", form=form, username = form.username.data)
 
 @app.route("/signup", methods=['GET','POST'])
 def signup():
@@ -87,9 +107,27 @@ def signup():
         new_user= User(username=form.username.data, email=form.email.data, password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
-        return '<h1>'+ form.email.data +'</h1>'
+        return redirect(url_for('dashboard'))
 
     return render_template("signup.html",form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+@app.route('/edit')
+def edit():
+    return render_template("edit.html")
+
+@app.route('/headshot', methods=['POST'])
+def headshot():
+    file = request.files['inputFile']
+    newFile = User(headshot=file.read())
+    db.session.add(newFile)
+    db.session.commit()
+    return redirect(url_for('dashboard'))
 
 @app.route("/chineseIndex")
 def chineseIndex():

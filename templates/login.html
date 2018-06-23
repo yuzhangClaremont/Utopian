@@ -6,7 +6,12 @@
 
 <body>
             {% include '_navbar.html' %}
+                <!-- if name is set -->
+
             <div class="container">
+                    {% if login_fail %} 
+                    <p>incorect username or password!</p>  
+                    {% endif %}
                 <form class="form-signin" method="POST" ACTION="/login">
                     <h2 class="form-signin-heading">Please log in</h2>
                     {{form.hidden_tag()}}

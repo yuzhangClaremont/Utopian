@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{%block body%}
+
+<body>
+            {% include '_userNavbar.html' %}
+            <h2>Welcome, {{name}}</h2>
+
+            <div class="container">
+
+                    <form method="POST" action="/headshot" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="pictures">Upload pictures</label>
+                        <input type="file" name="inputFile" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+                    <button type="submit" class="btn btn-default">submit</button>
+                    </form>
+                <hr>
+        
+                    <form>
+                    <div class="form-group">
+                        <label for="Introduction">Introduction</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
+                    </form>
+                <hr>
+                    <select class="form-control">
+                        <option>Current Location</option>
+                        <option>Beijing</option>
+                        <option>Guangzhou</option>
+                        <option>Kunming</option>
+                    </select>
+                <hr>
+                    <form>
+                    <div class="form-group">
+                        <label for="resume">Upload Resume</label>
+                        <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                    </div>
+                    <button type="submit" class="btn btn-default">submit</button>
+                    </form>
+            </div>
+
+            
+</body>
+{% endblock %}
