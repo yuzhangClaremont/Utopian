@@ -45,3 +45,27 @@ pretty print
 >>> newuser = User(1,'username1', 'email@email.com',' password', 'heashot')
 >>> db.session.add(newuser)
  db.session.commit()
+
+ ### sqalchemy
+ User.query.all()
+ User.query.filter_by(username='xxx')
+ user = User.query.get(1)
+ user.posts
+
+ db.drop_all() # drop all table and rows
+
+ ## errors
+
+ ### method not allowed
+post request or get request
+```
+@app.route(..., methods=['GET', 'POST'])
+```
+
+## flash
+
+from flask import flash
+
+@app...
+    if form.validate_on_submit():
+        flash(f'account created for {form.username.data}')

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="/">Utopian Rainbow</a>
+        <a class="navbar-brand" href="{{url_for('index',username=username)}}">Utopian Rainbow</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -7,24 +7,24 @@
         <div class="collapse navbar-collapse" id="navbarsExample04">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="/aboutus">ABOUT US <span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="{{url_for('aboutus',username=username)}}">ABOUT US <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{url_for('ngo',username='username')}}">NGOs</a>
+              <a class="nav-link" href="{{url_for('ngo',username=username)}}">NGOs</a>
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="/fellowship">FELLOWSHIPS</a>
+              <a class="nav-link" href="{{url_for('fellowship',username=username)}}">FELLOWSHIPS</a>
             </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="/community">COMMUNITY</a>
+            <a class="nav-link" href="{{url_for('community',username=username)}}">COMMUNITY</a>
           </li>
 
           <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Account Settings</a>
+              <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{username}}'s account setting</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="/edit">Edit</a>
+              <a class="dropdown-item" href="{{url_for('edit',username=username)}}">Edit</a>
               <a class="dropdown-item" href="/logout">Log out</a>  
               </div>
             </li>

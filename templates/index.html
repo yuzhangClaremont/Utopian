@@ -10,7 +10,13 @@
             <h1>Utopian</h1>
             <p>Together we define a better tomorrow</p>
         </div>
-            {% include '_navbar.html' %}
+        {% if username != None %} 
+        {% include '_userNavbar.html' %} 
+        <h1>username != None {{userName}}!</h1>
+        {% else %}
+        {% include '_navbar.html' %}
+        <h1>username = None</h1>
+        {% endif %}
     
             <div class="container">
                 <h1>Welcome to Utopian Rainbow</h1>
