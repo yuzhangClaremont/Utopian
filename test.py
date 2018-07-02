@@ -9,6 +9,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from io import BytesIO # convert data from database into bytes
 from datetime import datetime
+import os
+import secrets
+from PIL import Image
+
 
 
 # from passlib.hash import sha256_crypt
@@ -105,11 +109,25 @@ def fellowship(username=None):
 def community(username=None):
     return render_template("community.html", username=username)
 
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+
+    output_size = (125, 125)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
 @app.route("/dashboard/<username>")
 # @app.route("/dashboard/")
 @login_required
 def dashboard(username=None):
-    image_file = url_for('static', filename=current_user.headshot)
+    img = save_picture(current_user.headshot.data)
+    image_file = url_for('static', filename='image/'+img)
     return render_template("dashboard.html", username=current_user.username, image_file=image_file)
 
 @app.route("/login", methods=['GET','POST'])

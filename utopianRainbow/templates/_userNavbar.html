@@ -25,6 +25,7 @@
               <a class="nav-link dropdown-toggle" href="https://example.com" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{username}}'s account setting</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
               <a class="dropdown-item" href="{{url_for('edit',username=username)}}">Edit</a>
+              <a class="dropdown-item" href="{{url_for('dashboard',username=username)}}">My Page</a>
               <a class="dropdown-item" href="/logout">Log out</a>  
               </div>
             </li>
