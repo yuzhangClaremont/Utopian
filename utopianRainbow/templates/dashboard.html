@@ -1,9 +1,6 @@
 {% extends 'layout.html' %}
 
 {%block body%}
-<head>
-
-</head>
 
 <body>
             {% include '_userNavbar.html' %}
@@ -33,6 +30,18 @@
     </div>
     </div> 
     
-    
+    <div class="col-md-4" id='sidebar'>
+            <div class="content-section">
+              <h3>Our Sidebar</h3>
+              <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                  <a class="list-group-item list-group-item-light" href="{{url_for('new_post',username=username)}}">New Posts</a>
+                  <a class="list-group-item list-group-item-light" href="/post">My Posts</li>
+                  <li class="list-group-item list-group-item-light">Calendars</li>
+                  <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+              </p>
+            </div>
+    </div>
 </body>
 {% endblock %}

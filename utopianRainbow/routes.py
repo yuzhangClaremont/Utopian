@@ -1,6 +1,6 @@
 from flask import  render_template, url_for, flash, redirect, request, send_file
 from utopianRainbow import app, db, bcrypt
-from utopianRainbow.forms import RegistrationForm, LoginForm, UpdateAccountForm
+from utopianRainbow.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from utopianRainbow.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
@@ -147,6 +147,18 @@ def headshot():
     # return send_file(BytesIO(file_data.data),attachment_filename="flask.pdf",as_attachment=True)
     user_image = url_for('static', filename='current_user.headshot') 
     return render_template("dashboard.html", username=current_user.username, user_image = user_image)
+
+@app.route("/post/new/<username>", methods=['GET', 'POST'])
+@login_required
+def new_post(username=None):
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('dashboard',username=current_user.username))
+    return render_template('create_post.html', title='New Post', form=form)
 
 @app.route("/chineseIndex")
 def chineseIndex():
