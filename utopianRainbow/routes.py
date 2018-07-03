@@ -3,6 +3,9 @@ from utopianRainbow import app, db, bcrypt
 from utopianRainbow.forms import RegistrationForm, LoginForm, UpdateAccountForm
 from utopianRainbow.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
+import secrets
+import os
+from PIL import Image
 
 @app.route("/")
 # @app.route("/index")
@@ -37,18 +40,7 @@ def fellowship(username=None):
 def community(username=None):
     return render_template("community.html", username=username)
 
-def save_picture(form_picture):
-    random_hex = secrets.token_hex(8)
-    _, f_ext = os.path.splitext(form_picture.filename)
-    picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
 
-    output_size = (125, 125)
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
-
-    return picture_fn
 
 @app.route("/dashboard/<username>")
 # @app.route("/dashboard/")
@@ -57,7 +49,7 @@ def dashboard(username=None):
     form = UpdateAccountForm()
     # img = save_picture(current_user.image_file.data)
     image_file = url_for('static', filename='image/'+ current_user.image_file)
-    print(current_user.image_file)
+    # print(current_user.image_file)
     return render_template("dashboard.html", username=username, image_file = image_file, form = form)
 
 @app.route("/login", methods=['GET','POST'])
@@ -103,19 +95,39 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8) # random hex name to avoid user pic name overlap
+    _, f_ext = os.path.splitext(form_picture.filename) # os to save extension, _ is unused variable which is filename
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, 'static/image', picture_fn) #save pic as the name
+    # form_picture.save(picture_path)
+
+    output_size = (225, 225)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
 @app.route('/edit/<username>', methods=['GET','POST'])
 @login_required
 def edit(username=None):
     form =  UpdateAccountForm()
     if form.validate_on_submit():
-        # if form.picture.data:
-        #     picture_file = save_picture(form.picture.data)
-        #     current_user.image_file = picture_file
-        current_user.username = form.username.data
-        current_user.email = form.email.data
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            current_user.image_file = picture_file
+        if form.username.data != None:
+            current_user.username = form.username.data
+        if form.email.data != None:
+            current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated!', 'success')
+        # print(current_user.username, current_user.image_file)
         return redirect(url_for('dashboard',username=current_user.username))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
     return render_template("edit.html",username = username, form=form)
 
 @app.route('/headshot', methods=['POST'])

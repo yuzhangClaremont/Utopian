@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import Form, StringField, TextAreaField, PasswordField, SubmitField, BooleanField
+from flask_wtf.file import FileField, FileAllowed # for photo update and upload
+from wtforms import Form, StringField, TextAreaField, PasswordField, SubmitField, BooleanField, validators
 from wtforms.validators import DataRequired,InputRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
 from utopianRainbow.models import User
@@ -28,7 +28,7 @@ class UpdateAccountForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
-    # picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
+    picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
