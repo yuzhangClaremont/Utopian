@@ -44,6 +44,7 @@ def fellowship(username=None):
 
 @app.route("/community/")
 @app.route("/community/<username>")
+@login_required
 def community(username=None):
     # if current_user.is_authenticated:
     allposts = Post.query.all()
@@ -62,6 +63,17 @@ def dashboard(username=None):
     posts = Post.query.all()
     return render_template("dashboard.html", username=username, image_file = image_file,
         posts=posts)
+
+@app.route("/profile/<username>")
+def profile(username=None):
+    user = User.query.filter_by(username=username).first()
+    # form = UpdateAccountForm()
+    # img = save_picture(current_user.image_file.data)
+    image_file = url_for('static', filename='image/'+ user.image_file)
+    posts = Post.query.all()
+    print(user.username, user.email)
+    return render_template("profile.html",username = current_user.username ,name=user.username, image_file = image_file,
+        posts=posts, email=user.email)
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -173,7 +185,7 @@ def new_post(username=None):
     return render_template('create_post.html', form=form,username=current_user.username)
 
 @app.route("/post/<username>/display/<title>", methods=['GET', 'POST'])
-@login_required
+
 def post_display(username, title):
     thisPost = Post.query.filter_by(title = title).first()
     return render_template('post_display.html', post=thisPost, username=current_user.username)
