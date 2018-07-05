@@ -48,7 +48,7 @@ def fellowship(username=None):
 def community(username=None):
     # if current_user.is_authenticated:
     allposts = Post.query.all()
-    return render_template("community.html",username = username, allposts = allposts)
+    return render_template("community.html",username = current_user.username, allposts = allposts)
     # else:
     #     return render_template("community.html")
 
@@ -185,11 +185,14 @@ def new_post(username=None):
     return render_template('create_post.html', form=form,username=current_user.username)
 
 @app.route("/post/<username>/display/<title>", methods=['GET', 'POST'])
-
 def post_display(username, title):
     thisPost = Post.query.filter_by(title = title).first()
     return render_template('post_display.html', post=thisPost, username=current_user.username)
 
+@app.route("/post/<int:post_id>")
+def post(post_id):
+    post = Post.query.get_or_404(post_id) # if post id exist,find the post, or 404
+    return render_template('post.html', title=post.title, post=post)
 
 @app.route("/chineseIndex")
 def chineseIndex():
