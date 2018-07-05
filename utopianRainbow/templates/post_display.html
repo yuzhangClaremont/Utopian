@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{%block body%}
+
+<body class="bg-light" data-gr-c-s-loaded="true">
+        {% if username != None %} 
+        {% include '_userNavbar.html' %} 
+       
+        {% else %}
+        {% include '_navbar.html' %}
+       
+        {% endif %}
+        <div class="jumbotron " style="margin-bottom: 0px;">
+            <h1>Utopian</h1>
+            <p>Together we define a better tomorrow</p>
+        </div> 
+        
+        <article class="media content-section">
+                <img class="rounded-circle article-img" src="{{ url_for('static', filename='image/' + post.author.image_file) }}">
+                <div class="media-body">
+                  <div class="article-metadata">
+                    <a class="mr-2" href="{{url_for('dashboard',username=post.author.username)}}">{{ post.author.username }}</a>
+                    <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                  </div>
+                  <h2><a class="article-title" href="#">{{ post.title }}</a></h2>
+                  <p class="article-content">{{ post.content }}</p>
+                </div>
+              </article>
+</body>
+{% endblock body %}

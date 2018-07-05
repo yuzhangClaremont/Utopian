@@ -3,12 +3,15 @@
 {% block body %}
 <body>
     {% include '_userNavbar.html' %} 
-
+    <div class="jumbotron " style="margin-bottom: 0px;">
+        <h1>Utopian</h1>
+        <p>Together we define a better tomorrow</p>
+    </div>  
     <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">{{ legend }}</legend>
+                <legend class="border-bottom mb-4">{{ legend }} Post what's new!</legend>
                 <div class="form-group">
                     {{ form.title.label(class="form-control-label") }}
                     {% if form.title.errors %}

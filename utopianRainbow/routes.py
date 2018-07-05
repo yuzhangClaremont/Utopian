@@ -12,45 +12,56 @@ from PIL import Image
 @app.route("/<username>")
 def index(username=None):
     # if username != None:
-        return render_template("index.html",username =username )
+    # posts = Post.query.all()
+    return render_template("index.html",username =username )
     # else:
         # return render_template("index.html")
 
 @app.route("/aboutus/")
 @app.route("/aboutus/<username>")
 def aboutus(username=None):
-    return render_template("aboutus.html",username = username)
+    if current_user.is_authenticated:
+        # posts = Post.query.all()
+        return render_template("aboutus.html",username = username)
+    else:
+        return render_template("aboutus.html")
 
 @app.route("/ngo/")
 @app.route("/ngo/<username>")
 def ngo(username=None):
     # form = LoginForm()
     # if username != None:
+    # posts = Post.query.all()
     return render_template('ngo.html', username=username)
     # else:
         # return render_template("ngo.html")
         
-@app.route("/fellowship")
+@app.route("/fellowship/")
 @app.route("/fellowship/<username>")
 def fellowship(username=None):
+    # posts = Post.query.all()
     return render_template("fellowship.html", username = username)
 
-@app.route("/community")
+@app.route("/community/")
 @app.route("/community/<username>")
 def community(username=None):
-    return render_template("community.html", username=username)
-
+    # if current_user.is_authenticated:
+    allposts = Post.query.all()
+    return render_template("community.html",username = username, allposts = allposts)
+    # else:
+    #     return render_template("community.html")
 
 
 @app.route("/dashboard/<username>")
 # @app.route("/dashboard/")
 @login_required
 def dashboard(username=None):
-    form = UpdateAccountForm()
+    # form = UpdateAccountForm()
     # img = save_picture(current_user.image_file.data)
     image_file = url_for('static', filename='image/'+ current_user.image_file)
-    # print(current_user.image_file)
-    return render_template("dashboard.html", username=username, image_file = image_file, form = form)
+    posts = Post.query.all()
+    return render_template("dashboard.html", username=username, image_file = image_file,
+        posts=posts)
 
 @app.route("/login", methods=['GET','POST'])
 def login():
@@ -149,6 +160,7 @@ def headshot():
     return render_template("dashboard.html", username=current_user.username, user_image = user_image)
 
 @app.route("/post/new/<username>", methods=['GET', 'POST'])
+@app.route("/post/new/")
 @login_required
 def new_post(username=None):
     form = PostForm()
@@ -158,7 +170,14 @@ def new_post(username=None):
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('dashboard',username=current_user.username))
-    return render_template('create_post.html', title='New Post', form=form)
+    return render_template('create_post.html', form=form,username=current_user.username)
+
+@app.route("/post/<username>/display/<title>", methods=['GET', 'POST'])
+@login_required
+def post_display(username, title):
+    thisPost = Post.query.filter_by(title = title).first()
+    return render_template('post_display.html', post=thisPost, username=current_user.username)
+
 
 @app.route("/chineseIndex")
 def chineseIndex():

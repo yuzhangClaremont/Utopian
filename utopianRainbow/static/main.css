@@ -79,8 +79,7 @@ a.article-title:hover {
   font-size: 2.5rem;
 }
 
-/* #sidebar{
-  position: absolute;
-  right: 100px;
-  background-color: #428bca;
-} */
+#lang{
+margin-left: 10px;
+margin-right: 5px;
+}
