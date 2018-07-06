@@ -1,4 +1,4 @@
-from flask import  render_template, url_for, flash, redirect, request, send_file
+from flask import  render_template, url_for, flash, redirect, request, abort
 from utopianRainbow import app, db, bcrypt
 from utopianRainbow.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
 from utopianRainbow.models import User, Post
@@ -153,23 +153,7 @@ def edit(username=None):
         form.email.data = current_user.email
     return render_template("edit.html",username = username, form=form)
 
-@app.route('/headshot', methods=['POST'])
-def headshot():
-    file = request.files['inputFile']
-    user = User.query.filter_by(username = current_user.username).first()
-    user.headshot = file.read()
 
-    # db.session.delete(user) # delete a row
-
-    # newFile = User(headshot=file.read())
-    # db.session.add(newFile)
-    db.session.commit()
-    # return redirect(url_for('dashboard',username=username))
-
-    # headData = FileContents.query.filter_by(username=current_user.username).first()
-    # return send_file(BytesIO(file_data.data),attachment_filename="flask.pdf",as_attachment=True)
-    user_image = url_for('static', filename='current_user.headshot') 
-    return render_template("dashboard.html", username=current_user.username, user_image = user_image)
 
 @app.route("/post/new/<username>", methods=['GET', 'POST'])
 @app.route("/post/new/")
@@ -182,17 +166,54 @@ def new_post(username=None):
         db.session.commit()
         flash('Your post has been created!', 'success')
         return redirect(url_for('dashboard',username=current_user.username))
-    return render_template('create_post.html', form=form,username=current_user.username)
+    return render_template('create_post.html', form=form,username=current_user.username,
+        legend = 'Create Post')
 
-@app.route("/post/<username>/display/<title>", methods=['GET', 'POST'])
+@app.route("/post/<username>/display/<title>")
+@login_required
 def post_display(username, title):
     thisPost = Post.query.filter_by(title = title).first()
     return render_template('post_display.html', post=thisPost, username=current_user.username)
 
-@app.route("/post/<int:post_id>")
-def post(post_id):
-    post = Post.query.get_or_404(post_id) # if post id exist,find the post, or 404
-    return render_template('post.html', title=post.title, post=post)
+@app.route("/post/<username>/<title>/update",  methods=['GET', 'POST'])
+@login_required
+def post_update(username, title):
+    thisPost = Post.query.filter_by(title = title).first()
+    if thisPost.author != current_user:
+        abort(403)
+
+    form = PostForm()
+
+    if form.validate_on_submit():
+        thisPost.title = form.title.data
+        thisPost.content = form.content.data
+        db.session.commit()
+        flash('Your post have been updated', 'success')
+        return redirect(url_for('post_display',
+            username= current_user.username, title= thisPost.title))
+    elif request.method == 'GET':
+        form.title.data = thisPost.title
+        form.content.data = thisPost.content
+    print(thisPost.author, current_user)
+    return render_template('create_post.html', title='Update Post', 
+        form=form,username=current_user.username, legend='Update Post')
+
+@app.route("/post/<title>/delete", methods=['POST'])
+# @app.route("/post/delete", methods=['POST'])
+@login_required
+def post_delete(title=None):
+    post = Post.query.filter_by(title = title).first()
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('dashboard',username=current_user.username))
+
+# @app.route("/post/<int:post_id>")
+# def post_display(post_id):
+#     post = Post.query.get_or_404(post_id) # if post id exist,find the post, or 404
+#     return render_template('post_display.html', title=post.title, post=post)
 
 @app.route("/chineseIndex")
 def chineseIndex():
