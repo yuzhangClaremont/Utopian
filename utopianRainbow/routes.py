@@ -47,7 +47,8 @@ def fellowship(username=None):
 @login_required
 def community(username=None):
     # if current_user.is_authenticated:
-    allposts = Post.query.all()
+    page = request.args.get('page', 1, type=int) #requst variable from html, default at page 1
+    allposts = Post.query.order_by(Post.date_posted.desc()).paginate(per_page=5, page = page)
     return render_template("community.html",username = current_user.username, allposts = allposts)
     # else:
     #     return render_template("community.html")
@@ -215,6 +216,16 @@ def post_delete(title=None):
 #     post = Post.query.get_or_404(post_id) # if post id exist,find the post, or 404
 #     return render_template('post_display.html', title=post.title, post=post)
 
+@app.route("/user/<string:username>")
+def user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = User.query.filter_by(username=username).first_or_404()
+    posts = Post.query.filter_by(author=user)\
+        .order_by(Post.date_posted.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('user_posts.html', posts=posts, user=user)
+
+    
 @app.route("/chineseIndex")
 def chineseIndex():
     return render_template("chineseIndex.html")
