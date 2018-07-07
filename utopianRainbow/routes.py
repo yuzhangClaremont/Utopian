@@ -1,11 +1,13 @@
 from flask import  render_template, url_for, flash, redirect, request, abort
-from utopianRainbow import app, db, bcrypt
-from utopianRainbow.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm
+from utopianRainbow import app, db, bcrypt, mail
+from utopianRainbow.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
+ RequestResetForm, ResetPasswordForm)
 from utopianRainbow.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
 import os
 from PIL import Image
+from flask_mail import Message
 
 @app.route("/")
 # @app.route("/index")
@@ -225,7 +227,49 @@ def user_posts(username):
         .paginate(page=page, per_page=5)
     return render_template('user_posts.html', posts=posts, user=user)
 
-    
+def send_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender='noreply@demo.com',
+                  recipients=[user.email])
+    # multi line string, f string 1 {}
+    msg.body = f'''To reset your password, visit the following link:
+{url_for('reset_token', token=token, _external=True)}
+
+If you did not make this request then simply ignore this email and no changes will be made.
+'''
+    mail.send(msg)
+
+@app.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        flash('You are already log in!','success')
+        return redirect(url_for('dashboard', username = current_user.username))
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
+
 @app.route("/chineseIndex")
 def chineseIndex():
     return render_template("chineseIndex.html")
