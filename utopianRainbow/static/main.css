@@ -78,3 +78,15 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
+
+#lang{
+margin-left: 10px;
+margin-right: 5px;
+}
+
+.account-img-com {
+  height: 35px;
+  width: 35px;
+  margin-right: 10px;
+  margin-bottom: 16px;
+}

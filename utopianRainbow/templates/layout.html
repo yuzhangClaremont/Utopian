@@ -14,60 +14,112 @@
         <style>
             .jumbotron{
                 /* background- */
-                background-image: url({{ url_for('static', filename='rbf.jpg') }});
+                background-image: url({{ url_for('static', filename='image/rbf.jpg') }});
                 background-size: cover;  
             }
 
-            
-body
-{
-    font-family: 'Open Sans', sans-serif;
-}
+                    
+            body
+            {
+                font-family: 'Open Sans', sans-serif;
+            }
 
-.fb-profile img.fb-image-lg{
-    z-index: 0;
-    width: 100%;  
-    margin-bottom: 10px;
-}
+            .fb-profile img.fb-image-lg{
+                z-index: 0;
+                width: 100%;  
+                margin-bottom: 10px;
+            }
 
-.fb-image-profile
-{
-    margin: -90px 10px 0px 50px;
-    z-index: 9;
-    width: 20%; 
-}
+            .fb-image-profile
+            {
+                margin: -90px 10px 0px 50px;
+                z-index: 9;
+                width: 20%; 
+            }
 
-@media (max-width:768px)
-{
-    
-.fb-profile-text>h1{
-    font-weight: 700;
-    font-size:16px;
-}
+            @media (max-width:768px)
+            {
+                
+            .fb-profile-text>h1{
+                font-weight: 700;
+                font-size:16px;
+            }
 
-.fb-image-profile
-{
-    margin: -45px 10px 0px 25px;
-    z-index: 9;
-    width: 20%; 
-}
-}
+            .fb-image-profile
+            {
+                margin: -45px 10px 0px 25px;
+                z-index: 9;
+                width: 20%; 
+            }
+        }
+
+        /* #sidebar{
+        position: absolute;
+        right: 100px;
+        align-content: center;
+        } */
+
         </style>
 </head>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
+<!-- {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
-  <!-- {% for category, message in messages %} -->
+  <!-- {% for category, message in messages %} 
     <div class="alert alert-{{ category }}">
       {{ message }}
     </div>
   {% endfor %}
 {% endif %}
-{% endwith %}
+{% endwith %} -->
 
-        {%block body%}
+<main role="main" class="container">
+        <div class="row">
+          <div class="col-md-8">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+            {% block body %}{% endblock %}
+          </div>
+          <!-- <div class="col-md-4">
+            <div class="content-section">
+              <h3>Our Sidebar</h3>
+              <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                  <li class="list-group-item list-group-item-light">Latest Posts</li>
+                  <li class="list-group-item list-group-item-light">Announcements</li>
+                  <li class="list-group-item list-group-item-light">Calendars</li>
+                  <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+              </p>
+            </div>
+          </div> -->
+          {% if current_user.is_authenticated %}
+            <div class="col-md-4" id='sidebar'>
+            <div class="content-section">
+              <h3>Our Sidebar</h3>
+              <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                  <a class="list-group-item list-group-item-light" href="{{url_for('new_post',username=username)}}">New Posts</a>
+                  <a class="list-group-item list-group-item-light" href="{{url_for('user_posts', username = current_user.username)}}">My Posts</a>
+                  <div class="content-section">
+            
+                  </div>
+                  <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+              </p>
+            </div>
+            </div>
+        {%endif%}
+        </div>
+      </main>
+
  
-        {%endblock%}
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>

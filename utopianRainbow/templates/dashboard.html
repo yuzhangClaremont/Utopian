@@ -1,28 +1,11 @@
 {% extends 'layout.html' %}
 
 {%block body%}
-<head>
-
-</head>
 
 <body>
             {% include '_userNavbar.html' %}
          
-            <!-- <img src="{{headshot}}" alt=""> -->
 
-
-
-
-<div class="container">
-  <!--   <div class="fb-profile">
-        <img align="left" class="fb-image-lg" src="{{ url_for('static', filename='image/rbf.jpg') }}" alt="Profile image example"/>
-        <img align="left" class="fb-image-profile thumbnail" src="{{ image_file }}" alt="Profile image example"/>
-        <div class="fb-profile-text">
-            <h1>{{username}}</h1>
-            <!-- <p>Girls just wanna go fun.</p> 
-        </div>
-    </div>
-</div> -->
     <div class="content-section">
     <div class="media">
         <img class="rounded-circle account-img" src="{{ image_file }}">
@@ -33,6 +16,24 @@
     </div>
     </div> 
     
-    
+    <!-- <div class="col-md-4" id='sidebar'>
+            <div class="content-section">
+              <h3>Our Sidebar</h3>
+              <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                  <a class="list-group-item list-group-item-light" href="{{url_for('new_post',username=username)}}">New Posts</a>
+                  <li class="list-group-item list-group-item-light" href="/post">My Posts</li>
+                  <div class="content-section">
+                  <ul class="list-group">
+                        {% for post in posts %}
+                        <a class="list-group-item list-group-item-light" href="{{url_for('post_display',username=username, title = post.title)}}">{{post.title}}</a>
+                        {% endfor %}
+                  </ul>  
+                  </div>
+                  <li class="list-group-item list-group-item-light">etc</li>
+                </ul>
+              </p>
+            </div>
+    </div> -->
 </body>
 {% endblock %}
