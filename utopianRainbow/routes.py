@@ -1,8 +1,8 @@
 from flask import  render_template, url_for, flash, redirect, request, abort
 from utopianRainbow import app, db, bcrypt, mail
 from utopianRainbow.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
- RequestResetForm, ResetPasswordForm)
-from utopianRainbow.models import User, Post
+    PostCommentForm,RequestResetForm, ResetPasswordForm)
+from utopianRainbow.models import User, Post, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
 import os
@@ -172,11 +172,21 @@ def new_post(username=None):
     return render_template('create_post.html', form=form,username=current_user.username,
         legend = 'Create Post')
 
-@app.route("/post/<username>/display/<title>")
+@app.route("/post/<username>/display/<title>", methods=['GET','POST'])
 @login_required
 def post_display(username, title):
     thisPost = Post.query.filter_by(title = title).first()
-    return render_template('post_display.html', post=thisPost, username=current_user.username)
+    form = PostCommentForm()
+    if form.validate_on_submit():
+        comment = Comment(body = form.comment.data,post_id=thisPost.id, author_id=current_user.id)
+        db.session.add(comment)
+        db.session.commit()
+        flash('Comments added!','success')
+        return redirect(url_for('post_display', username=username, title=title))
+    comments = Comment.query.filter_by(post=thisPost).order_by(Comment.timestamp.desc())
+    print(comments, 'the comment list is here')
+    return render_template('post_display.html', post=thisPost, username=current_user.username, 
+        form=form,comments = comments)
 
 @app.route("/post/<username>/<title>/update",  methods=['GET', 'POST'])
 @login_required
@@ -197,7 +207,7 @@ def post_update(username, title):
     elif request.method == 'GET':
         form.title.data = thisPost.title
         form.content.data = thisPost.content
-    print(thisPost.author, current_user)
+    # print(thisPost.author, current_user)
     return render_template('create_post.html', title='Update Post', 
         form=form,username=current_user.username, legend='Update Post')
 

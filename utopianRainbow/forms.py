@@ -48,6 +48,10 @@ class PostForm(FlaskForm):
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Post')
 
+class PostCommentForm(FlaskForm):
+    comment = TextAreaField('Add comments', validators=[DataRequired()])
+    submit = SubmitField('Post')
+
 class RequestResetForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
