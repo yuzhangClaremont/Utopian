@@ -1,5 +1,5 @@
-from flask import  render_template, url_for, flash, redirect, request, abort
-from utopianRainbow import app, db, bcrypt, mail
+from flask import  render_template, url_for, flash, redirect, request, abort, jsonify
+from utopianRainbow import app, db, bcrypt, mail, map, Map
 from utopianRainbow.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
     PostCommentForm,RequestResetForm, ResetPasswordForm)
 from utopianRainbow.models import User, Post, Comment
@@ -8,6 +8,9 @@ import secrets
 import os
 from PIL import Image
 from flask_mail import Message
+import pygeoip # pip3 install
+
+# gi = pygeoip.GeoIP('GeoIPCity.dat', pygeoip.MEMORY_CACHE)
 
 @app.route("/")
 # @app.route("/index")
@@ -34,6 +37,14 @@ def ngo(username=None):
     # form = LoginForm()
     # if username != None:
     # posts = Post.query.all()
+    # url = 'http://freegeoip.net/json/{}'.format(request.remote_addr)
+    # r = request.get(url)
+    # j = json.loads(r.text)
+    # city = j['city']
+
+    # print(city)
+    # geo_data = gi.record_by_addr(request.remote_addr)
+    # print(jsonify(geo_data))
     return render_template('ngo.html', username=username)
     # else:
         # return render_template("ngo.html")
@@ -283,6 +294,36 @@ def reset_token(token):
 @app.route("/chineseIndex")
 def chineseIndex():
     return render_template("chineseIndex.html")
+
+@app.route("/map")
+def mapview():
+    # creating a map in the view
+    mymap = Map(
+        identifier="view-side",
+        lat=37.4419,
+        lng=-122.1419,
+        markers=[(37.4419, -122.1419)]
+    )
+    sndmap = Map(
+        identifier="sndmap",
+        lat=37.4419,
+        lng=-122.1419,
+        markers=[
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+             'lat': 37.4419,
+             'lng': -122.1419,
+             'infobox': "<b>Hello World</b>"
+          },
+          {
+             'icon': 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+             'lat': 37.4300,
+             'lng': -122.1400,
+             'infobox': "<b>Hello World from other place</b>"
+          }
+        ]
+    )
+    return render_template('example.html', mymap=mymap, sndmap=sndmap)
 
 
 if __name__ == "__main__":
