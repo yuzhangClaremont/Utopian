@@ -12,5 +12,31 @@
         {% endif %}
             
             <h2>NGO</h2>
+
+            <form class="form-signin" method="POST" action="">
+                {{ form.hidden_tag() }}
+                <fieldset class="form-group"> <!-- bootstrap no outlook change -->
+                    <legend class="border-bottom mb-4">Find your location</legend>
+
+                    <div class="form-group">
+                        <!-- label is 'Username', class change bootstrap -->
+                        {{ form.country.label(class="form-control-label") }}
+                        <!-- when field is invalid -->
+                        <!-- {% if form.country.errors %}
+                            {{ form.country(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.country.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %} -->
+                        <!-- the form itself -->
+                            <!-- {{ form.country(class="form-control form-control-md") }}
+                        <!-- {% endif %} 
+                        {{ form.region.label(class="form-control-label") }}
+                        {{ form.region(class="form-control form-control-md") }} -->
+                    </div>
+
+                </form>
 </body>
 {% endblock %}

@@ -1,9 +1,17 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed # for photo update and upload
-from wtforms import Form, StringField, TextAreaField, PasswordField, SubmitField, BooleanField, validators
+from wtforms import Form, StringField, TextAreaField, PasswordField, SubmitField, BooleanField, validators,\
+    SelectField
 from wtforms.validators import DataRequired,InputRequired, Email, Length, EqualTo, ValidationError
 from flask_login import current_user
 from utopianRainbow.models import User
+
+CHINA_CHOICES = [('1','YUNNAN'),('2','GUANGZHOU')]
+COUNTRY_CHOICES = [('US','USA'),('CN','China')]
+
+class NGOForm(FlaskForm):
+    country = SelectField('Country', choices=[('US','USA'),('CN','China')])
+    region = SelectField('Region', choices=[])
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',

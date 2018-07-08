@@ -1,7 +1,7 @@
 from flask import  render_template, url_for, flash, redirect, request, abort, jsonify
 from utopianRainbow import app, db, bcrypt, mail, map, Map
 from utopianRainbow.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
-    PostCommentForm,RequestResetForm, ResetPasswordForm)
+    PostCommentForm,RequestResetForm, ResetPasswordForm, NGOForm)
 from utopianRainbow.models import User, Post, Comment
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
@@ -34,7 +34,12 @@ def aboutus(username=None):
 @app.route("/ngo/")
 @app.route("/ngo/<username>")
 def ngo(username=None):
-    # form = LoginForm()
+    form = NGOForm()
+    # form.region.choices = [(city.id, city.region) for city in City.query.filter_by(region='CA').all()]
+
+    # if request.method == 'POST':
+    #     city = City.query.filter_by(id=form.city.data).first()
+    #     return '<h1>State: {}, City: {}</h1>'.format(form.state.data, city.name)
     # if username != None:
     # posts = Post.query.all()
     # url = 'http://freegeoip.net/json/{}'.format(request.remote_addr)
@@ -45,7 +50,7 @@ def ngo(username=None):
     # print(city)
     # geo_data = gi.record_by_addr(request.remote_addr)
     # print(jsonify(geo_data))
-    return render_template('ngo.html', username=username)
+    return render_template('ngo.html', username=username, form = form)
     # else:
         # return render_template("ngo.html")
         
