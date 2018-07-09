@@ -38,11 +38,24 @@
 
                         {{ form.city.label(class="form-control-label") }}
                         {{ form.city(class="form-control form-control-md", id = 'city') }}
+                        <div class="form-group">
+                                {{ form.submit(class="btn btn-outline-info") }}
+                            </div>
                     </div>
 
-                  
-
                 </form>
+
+                <p>test</p>
+
+                {% for ngo in ngos.items %}
+                    {{ngo.name}}
+                    <p> ngo intro</p>
+                {% endfor %}
+                <!-- {% if ngos[0] %}
+                there are ngos
+                {% endif %} -->
+
+                
 
                 <script>
                         var country_select = document.getElementById("country");

@@ -31,25 +31,34 @@ def aboutus(username=None):
     else:
         return render_template("aboutus.html")
 
-@app.route("/ngo/")
-@app.route("/ngo/<username>")
+@app.route("/ngo/", methods=['GET','POST'])
+@app.route("/ngo/<username>", methods=['GET','POST'])
 @app.route('/ngo/show/<city_id>')
 def ngo(username=None, city_id=None):
     CHINA_CHOICES = [('0','SELECT'),('1','YUNNAN'),('2','GUANGDONG'),('3','Beijing')]
-    USA_CHOICES = [('1','California'),('2','New York')]
+    USA_CHOICES = [('0','SELECT'),('1','California'),('2','New York')]
     form = NGOForm()
     if form.country.data == 'China':
         form.region.choices = CHINA_CHOICES
     if form.country.data == 'USA':
         form.region.choices = USA_CHOICES
-
-    c = form.city.data
-    print(c)
-    city = City.query.filter_by(id = city_id).first()
+    # id = city_id
+    # print(id)
+    ngos = NGO.query.all()
+    if form.validate_on_submit():
+    # c = form.city.data
+    # print(c)
+    # city = City.query.filter_by(id = city_id).first()
     # ngo = city.ngo
-    print(city)
-    ngos = NGO.query.filter_by(city_id = city_id).all()
-    print(ngos[0])
+    # print(city)
+        ngos = NGO.query.filter_by(city_id = city_id).all()
+        print(ngos,'CITY!!!')
+        return redirect(url_for('ngo', username=username, form = form, ngos = ngos ))
+    # for i in ngos:
+
+    #     print(i.name)
+    print(ngos,'ALL!!!')
+    return render_template('ngo.html', username=username, form = form, ngos = ngos )
     # cityOfCountry = City.query.filter_by(country=form.country.data).first
     # form.region.choices = [(city.id, city.region) for city in City.query.filter_by(region=form.country).all()]
 
@@ -68,7 +77,7 @@ def ngo(username=None, city_id=None):
     # print(city)
     # geo_data = gi.record_by_addr(request.remote_addr)
     # print(jsonify(geo_data))
-    return render_template('ngo.html', username=username, form = form, ngos= ngos)
+    # return render_template('ngo.html', username=username, form = form, ngos= ngos)
     # else:
         # return render_template("ngo.html")
 

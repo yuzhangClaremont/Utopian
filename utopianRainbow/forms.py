@@ -13,6 +13,7 @@ class NGOForm(FlaskForm):
     country = SelectField('Country', choices=[('0','SELECT'),('USA','USA'),('China','China')])
     region = SelectField('Region', choices=[])
     city = SelectField('City', choices=[])
+    submit = SubmitField('submit')
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
