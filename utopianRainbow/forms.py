@@ -6,12 +6,13 @@ from wtforms.validators import DataRequired,InputRequired, Email, Length, EqualT
 from flask_login import current_user
 from utopianRainbow.models import User
 
-CHINA_CHOICES = [('1','YUNNAN'),('2','GUANGZHOU')]
-COUNTRY_CHOICES = [('US','USA'),('CN','China')]
+# CHINA_CHOICES = [('1','YUNNAN'),('2','GUANGZHOU')]
+# USA_CHOICES = [('USA','USA'),('China','China')]
 
 class NGOForm(FlaskForm):
-    country = SelectField('Country', choices=[('US','USA'),('CN','China')])
+    country = SelectField('Country', choices=[('0','SELECT'),('USA','USA'),('China','China')])
     region = SelectField('Region', choices=[])
+    city = SelectField('City', choices=[])
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',

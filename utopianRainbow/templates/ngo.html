@@ -31,12 +31,87 @@
                             </div>
                         {% else %} -->
                         <!-- the form itself -->
-                            <!-- {{ form.country(class="form-control form-control-md") }}
-                        <!-- {% endif %} 
+                            {{ form.country(class="form-control form-control-md", id='country') }}
+                        <!-- {% endif %} -->
                         {{ form.region.label(class="form-control-label") }}
-                        {{ form.region(class="form-control form-control-md") }} -->
+                        {{ form.region(class="form-control form-control-md", id='region') }}
+
+                        {{ form.city.label(class="form-control-label") }}
+                        {{ form.city(class="form-control form-control-md", id = 'city') }}
                     </div>
 
+                  
+
                 </form>
+
+                <script>
+                        var country_select = document.getElementById("country");
+                        var region_select = document.getElementById("region");
+                        var city_select = document.getElementById("city");
+
+                        country_select.onchange = function()  {
+                            country = country_select.value;
+                            // alert(country);
+                            fetch('/ngo/select/'+country)
+
+                                .then(function(response){ 
+                                response.json().then(function(data){ 
+                                    console.table(data);
+                                    console.log(data.regions)
+
+                                    let optionHTML='';
+
+                                    for (let region of data.regions){
+                                        optionHTML += '<option value="' + region.id + '">' + region.name + '</option>';
+                                    }
+                                    region_select.innerHTML = optionHTML;
+                                //     alert(data);
+                                });
+                                // .catch(function(error) {
+                                // // If there is any error you will catch them here
+                                // })
+                            });
+                        }
+
+                        region_select.onchange = function()  {
+                            country = country_select.value;
+                            region = region_select.value;
+                            
+                            fetch('/ngo/select/'+country+'/'+region)
+                                .then(function(response){ 
+                                response.json().then(function(data){ 
+                                    console.table(data);
+                                    console.log(data.regions)
+
+                                    let optionHTML='';
+                                    for (let city of data.cities){
+                                        optionHTML += '<option value="' + city.id + '">' + city.name + '</option>';
+                                    }
+                                    city_select.innerHTML = optionHTML;
+                               
+                                });
+                            });
+                        }
+
+                            city_select.onchange = function()  {
+                            country = country_select.value;
+                            city = city_select.value;
+                            
+                            fetch('/ngo/show/'+city)
+                                .then(function(response){ 
+                                // response.json().then(function(data){ 
+                                //     console.table(data);
+                                    console.log(city)
+
+                                //     let optionHTML='';
+                                //     for (let city of data.cities){
+                                //         optionHTML += '<option value="' + city.id + '">' + city.name + '</option>';
+                                //     }
+                                //     city_select.innerHTML = optionHTML;
+                               
+                                // });
+                            });
+                        }
+                </script>
 </body>
 {% endblock %}

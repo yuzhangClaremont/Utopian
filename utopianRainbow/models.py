@@ -111,7 +111,7 @@ class NGO(db.Model):
    
 
     def __repr__(self):
-        return f"NGO('{self.name}','{self.city}')"
+        return f"NGO('{self.name}','{self.city_id}')"
 
 class Activities(db.Model):
     __tablename__='activities'
@@ -147,3 +147,5 @@ class City(db.Model):
     ngo = db.relationship('NGO', backref='city', lazy=True)
     activities = db.relationship('Activities', backref='city', lazy=True)
     jobs = db.relationship('Jobs', backref='city', lazy=True)
+    def __repr__(self):
+        return f"city('{self.name}','{self.ngo}')"

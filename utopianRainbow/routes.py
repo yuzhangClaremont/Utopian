@@ -2,7 +2,7 @@ from flask import  render_template, url_for, flash, redirect, request, abort, js
 from utopianRainbow import app, db, bcrypt, mail, map, Map
 from utopianRainbow.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
     PostCommentForm,RequestResetForm, ResetPasswordForm, NGOForm)
-from utopianRainbow.models import User, Post, Comment
+from utopianRainbow.models import User, Post, Comment, City, NGO
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
 import os
@@ -33,13 +33,31 @@ def aboutus(username=None):
 
 @app.route("/ngo/")
 @app.route("/ngo/<username>")
-def ngo(username=None):
+@app.route('/ngo/show/<city_id>')
+def ngo(username=None, city_id=None):
+    CHINA_CHOICES = [('0','SELECT'),('1','YUNNAN'),('2','GUANGDONG'),('3','Beijing')]
+    USA_CHOICES = [('1','California'),('2','New York')]
     form = NGOForm()
-    # form.region.choices = [(city.id, city.region) for city in City.query.filter_by(region='CA').all()]
+    if form.country.data == 'China':
+        form.region.choices = CHINA_CHOICES
+    if form.country.data == 'USA':
+        form.region.choices = USA_CHOICES
+
+    c = form.city.data
+    print(c)
+    city = City.query.filter_by(id = city_id).first()
+    # ngo = city.ngo
+    print(city)
+    ngos = NGO.query.filter_by(city_id = city_id).all()
+    print(ngos[0])
+    # cityOfCountry = City.query.filter_by(country=form.country.data).first
+    # form.region.choices = [(city.id, city.region) for city in City.query.filter_by(region=form.country).all()]
 
     # if request.method == 'POST':
-    #     city = City.query.filter_by(id=form.city.data).first()
-    #     return '<h1>State: {}, City: {}</h1>'.format(form.state.data, city.name)
+    #     return render_template('ngo.html', username=username, form = form)
+
+        # city = City.query.filter_by(id=form.city.data).first()
+        # return '<h1>State: {}, City: {}</h1>'.format(form.state.data, city.name)
     # if username != None:
     # posts = Post.query.all()
     # url = 'http://freegeoip.net/json/{}'.format(request.remote_addr)
@@ -50,9 +68,49 @@ def ngo(username=None):
     # print(city)
     # geo_data = gi.record_by_addr(request.remote_addr)
     # print(jsonify(geo_data))
-    return render_template('ngo.html', username=username, form = form)
+    return render_template('ngo.html', username=username, form = form, ngos= ngos)
     # else:
         # return render_template("ngo.html")
+
+@app.route('/ngo/select/<country>')
+def region(country):
+    # cities = City.query.filter_by(state=state).all()
+    CHINA_CHOICES = [('0','SELECT'),('Yunnan','Yunnan'),('Guangdong','Guangdong'),('Beijing','Beijing'),('Shanghai','Shanghai')]
+    USA_CHOICES = [('0','SELECT'),('California','California'),('New York','New York')]
+    
+    if country == 'China':
+        regions = CHINA_CHOICES
+    if country== 'USA':
+        regions = USA_CHOICES
+    regionArray = []
+
+    for region in regions:
+        regObj = {}
+        regObj['id'] = region[0]
+        regObj['name'] = region[1]
+        regionArray.append(regObj)
+
+    return jsonify({'regions' : regionArray})
+
+@app.route('/ngo/select/<country>/<region>')
+def city(country,region):
+    # cities = City.query.filter_by(state=state).all()
+    cities = City.query.filter_by(region = region).all()
+    print(cities)
+    cityArray = []
+
+    select={}
+    select['id']= 0
+    select['name']='SELECT'
+    cityArray.append(select)
+
+    for city in cities:
+        cityObj = {}
+        cityObj['id'] = city.id
+        cityObj['name'] = city.name
+        cityArray.append(cityObj)
+
+    return jsonify({'cities' : cityArray})
         
 @app.route("/fellowship/")
 @app.route("/fellowship/<username>")
