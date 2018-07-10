@@ -10,7 +10,7 @@ from utopianRainbow.models import User
 # USA_CHOICES = [('USA','USA'),('China','China')]
 
 class NGOForm(FlaskForm):
-    country = SelectField('Country', choices=[('0','SELECT'),('USA','USA'),('China','China')])
+    country = SelectField('Country', choices=[(0,'SELECT'),('USA','USA'),('China','China')], default = 0)
     region = SelectField('Region', choices=[])
     city = SelectField('City', choices=[])
     submit = SubmitField('submit')

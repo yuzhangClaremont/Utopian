@@ -31,6 +31,8 @@ def aboutus(username=None):
     else:
         return render_template("aboutus.html")
 
+
+
 @app.route("/ngo/", methods=['GET','POST'])
 @app.route("/ngo/<username>", methods=['GET','POST'])
 @app.route('/ngo/show/<city_id>')
@@ -45,15 +47,22 @@ def ngo(username=None, city_id=None):
     # id = city_id
     # print(id)
     ngos = NGO.query.all()
-    if form.validate_on_submit():
+    if request.method == 'POST':
+        # print(city_id)
+        city = City.query.filter_by(id = form.city.data).first()
+        # print(city)
+        ngos = NGO.query.filter_by(city_id = city.id).all()
+        print(ngos,'CITY!!!')
+        form.country.data = 0
+        return render_template('ngo.html', username=username, form = form, ngos = ngos )
+        # return redirect(url_for('ngo', username=username, form = form, ngos = ngos ))
     # c = form.city.data
     # print(c)
     # city = City.query.filter_by(id = city_id).first()
     # ngo = city.ngo
     # print(city)
-        ngos = NGO.query.filter_by(city_id = city_id).all()
-        print(ngos,'CITY!!!')
-        return redirect(url_for('ngo', username=username, form = form, ngos = ngos ))
+        
+        
     # for i in ngos:
 
     #     print(i.name)
