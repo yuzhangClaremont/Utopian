@@ -15,6 +15,15 @@ class NGOForm(FlaskForm):
     city = SelectField('City', choices=[])
     submit = SubmitField('submit')
 
+class NGOCreateForm(FlaskForm):
+    name = StringField('Orgnization Name', validators=[DataRequired()])
+    address = TextAreaField('Address', validators=[DataRequired()])
+    city = StringField('city', validators=[DataRequired()])
+    region = StringField('region',validators=[DataRequired()] )
+    website = StringField('Website')
+    intro = TextAreaField('Introduction', validators=[DataRequired()])
+    submit = SubmitField('submit')
+
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])

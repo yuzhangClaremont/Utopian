@@ -1,7 +1,7 @@
 from flask import  render_template, url_for, flash, redirect, request, abort, jsonify
 from utopianRainbow import app, db, bcrypt, mail, map, Map
 from utopianRainbow.forms import (RegistrationForm, LoginForm, UpdateAccountForm, PostForm,
-    PostCommentForm,RequestResetForm, ResetPasswordForm, NGOForm)
+    PostCommentForm,RequestResetForm, ResetPasswordForm, NGOForm, NGOCreateForm)
 from utopianRainbow.models import User, Post, Comment, City, NGO
 from flask_login import login_user, current_user, logout_user, login_required
 import secrets
@@ -31,7 +31,29 @@ def aboutus(username=None):
     else:
         return render_template("aboutus.html")
 
-
+@app.route("/ngo/admin/new/<username>", methods=['GET', 'POST'])
+@login_required
+def ngo_new(username=None):
+    form = NGOCreateForm()
+    if form.validate_on_submit():
+        cityName = form.city.data[0].upper()+form.city.data[1:].lower()
+        regName = form.region.data[0].upper()+form.region.data[1:].lower()
+        city = City.query.filter_by(name=cityName).first()
+        if city:
+            ngo = NGO(city_id=city.id, name=form.name.data, intro=form.intro.data,address=form.address.data,website=form.website.data)
+            db.session.add(ngo)
+            db.session.commit()
+        else:
+            newCity = City(name = cityName, region = regName )
+            db.session.add(newCity)
+            db.session.commit()
+            ngo = NGO(city_id=newCity.id, name=form.name.data, intro=form.intro.data,address=form.address.data,website=form.website.data)
+            db.session.add(ngo)
+            db.session.commit()
+        flash('Your NGO info has been created!', 'success')
+        return redirect(url_for('ngo', username =username))
+    return render_template('NGO_create.html', form=form,username=current_user.username,
+        legend = 'Create NGO info')
 
 @app.route("/ngo/", methods=['GET','POST'])
 @app.route("/ngo/<username>", methods=['GET','POST'])
