@@ -88,3 +88,9 @@ heroku --help
 
 Creating app... done, ⬢ pure-garden-35230
 https://pure-garden-35230.herokuapp.com/ | https://git.heroku.com/pure-garden-35230.git
+
+git push heroku master
+
+heroku open
+
+echo "python-3.6.5" > runtime.txt
