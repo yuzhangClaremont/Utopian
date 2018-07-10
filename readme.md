@@ -69,3 +69,22 @@ from flask import flash
 @app...
     if form.validate_on_submit():
         flash(f'account created for {form.username.data}')
+
+## deploy on heroku
+
+pip freeze > requirements.txt
+
+heroku login
+
+pip3 install gunicorn
+
+touch Procfile
+
+heroku apps:destroy appname
+
+heroku apps
+
+heroku --help
+
+Creating app... done, ⬢ pure-garden-35230
+https://pure-garden-35230.herokuapp.com/ | https://git.heroku.com/pure-garden-35230.git
