@@ -94,3 +94,56 @@ git push heroku master
 heroku open
 
 echo "python-3.6.5" > runtime.txt
+
+### launch on AWS
+
+## Elastic Beanstalk
+
+IAM
+
+YUN
+programatic access
+
+permission
+wselasticbeanstalkfullaccess
+
+pip3 install awscli
+pip3 install awsebcli
+eb init -i
+
+Enter same passphrase again: 
+Your identification has been saved in /Users/yunzhang/.ssh/prototyping4.
+Your public key has been saved in /Users/yunzhang/.ssh/prototyping4.pub.
+The key fingerprint is:
+SHA256:jOwv3AXvKhDbkXiASPaOUQRX9l+ry4+uYrB2+/zHcQ0 prototyping4
+The key's randomart image is:
+20021991
+
+```
+eb create utopist
+```
+
+
+Environment details for: utopist
+  Application name: UTOPIAN
+  Region: us-west-2
+  Deployed Version: app-a836-180723_220904
+  Environment ID: e-pbm967ufmf
+  Platform: arn:aws:elasticbeanstalk:us-west-2::platform/Python 3.6 running on 64bit Amazon Linux/2.7.1
+  Tier: WebServer-Standard-1.0
+  CNAME: UNKNOWN
+  Updated: 2018-07-23 14:11:17.448000+00:00
+Printing Status:
+2018-07-23 14:11:16    INFO    createEnvironment is starting.
+2018-07-23 14:11:17    INFO    Using elasticbeanstalk-us-west-2-743248756403 as Amazon S3 storage bucket for environment data.
+2018-07-23 14:11:44    ERROR   Stack named 'awseb-e-pbm967ufmf-stack' aborted operation. Current state: 'CREATE_FAILED'  Reason: The following resource(s) failed to create: [AWSEBLoadBalancer, AWSEBSecurityGroup]. 
+2018-07-23 14:11:44    INFO    Created security group named: sg-06972d5b5d9488328
+2018-07-23 14:11:44    ERROR   Creating load balancer failed Reason: API: elasticloadbalancing:CreateLoadBalancer User: arn:aws:iam::743248756403:user/YUN is not authorized to perform: iam:CreateServiceLinkedRole on resource: arn:aws:iam::743248756403:role/aws-service-role/elasticloadbalancing.amazonaws.com/AWSServiceRoleForElasticLoadBalancing
+2018-07-23 14:11:44    ERROR   Creating security group named: awseb-e-pbm967ufmf-stack-AWSEBSecurityGroup-RP769GWP2UWV failed Reason: Resource creation cancelled
+2018-07-23 14:11:45    INFO    Launched environment: utopist. However, there were issues during launch. See event log for details.
+                                
+```
+eb open utopist
+```
+
+https://aws.amazon.com/getting-started/tutorials/update-an-app/
